@@ -3,7 +3,7 @@ const { INCORRECT_DATA_ERROR, NOT_FOUND_ERROR, DEFAULT_ERROR } = require('../uti
 
 module.exports.getCards = (req, res) => {
   Card.find({})
-  .then(card => res.status(200).send(card))
+  .then((cards) => res.status(200).send({ data: cards }))
   .catch(() => res.status(DEFAULT_ERROR).send({ message: 'Произошла ошибка' }));
 };
 
@@ -12,7 +12,7 @@ module.exports.createCard = (req, res) => {
   const owner = req.user._id;
 
   Card.create({ name, link, owner })
-  .then((card) => res.status(200).send(card))
+  .then((card) => res.status(200).send({ data: card }))
   .catch((err) => {
     if (err.name === 'ValidationError') {
       return res.status(INCORRECT_DATA_ERROR).send({ message: 'Переданы некорректные данные при создании карточки' });
@@ -27,7 +27,7 @@ module.exports.deleteCard = (req, res) => {
     if (!card) {
        return res.status(NOT_FOUND_ERROR).send({ message: 'Карточка с указанным _id не найдена' });
     }
-    return res.status(200).send(card);
+    return res.status(200).send({ data: card });
   })
   .catch(() => res.status(DEFAULT_ERROR).send({ message: 'Произошла ошибка' }));
 };
@@ -38,7 +38,7 @@ module.exports.likeCard = (req, res) => {
     if (!card) {
        return res.status(NOT_FOUND_ERROR).send({ message: 'Передан несуществующий _id карточки' });
     }
-    return res.status(200).send(card);
+    return res.status(200).send({ data: card });
   })
   .catch((err) => {
     if (err.name === 'CastError') {
@@ -54,7 +54,7 @@ module.exports.dislikeCard = (req, res) => {
     if (!card) {
        return res.status(NOT_FOUND_ERROR).send({ message: 'Передан несуществующий _id карточки' });
     }
-    return res.status(200).send(card);
+    return res.status(200).send({ data: card });
   })
   .catch((err) => {
     if (err.name === 'CastError') {
