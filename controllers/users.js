@@ -3,7 +3,7 @@ const { INCORRECT_DATA_ERROR, NOT_FOUND_ERROR, DEFAULT_ERROR } = require('../uti
 
 module.exports.getUsers = (req, res) => {
   User.find({})
-  .then((users) => res.status(200).send({ data: users }))
+  .then((users) => res.send({ data: users }))
   .catch(() => res.status(DEFAULT_ERROR).send({ message: 'Произошла ошибка' }));
 };
 
@@ -13,7 +13,7 @@ module.exports.getUser = (req, res) => {
     if (!user) {
       return res.status(NOT_FOUND_ERROR).send({ message: 'Пользователь по указанному _id не найден' });
     }
-    return res.status(200).send({ data: user });
+    return res.send({ data: user });
   })
   .catch((err) => {
     if (err.name === 'CastError') {
@@ -27,7 +27,7 @@ module.exports.createUser = (req, res) => {
   const { name, about, avatar } = req.body;
 
   User.create({ name, about, avatar })
-  .then((user) => res.status(200).send({ data: user }))
+  .then((user) => res.send({ data: user }))
   .catch((err) => {
     if (err.name === 'ValidationError') {
       return res.status(INCORRECT_DATA_ERROR).send({ message: 'Переданы некорректные данные при создании пользователя' });
@@ -43,7 +43,7 @@ module.exports.updateUser = (req, res) => {
     if (!user) {
       return res.status(NOT_FOUND_ERROR).send({ message: 'Пользователь с указанным _id не найден' });
     }
-    return res.status(200).send({ data: user });
+    return res.send({ data: user });
   })
   .catch((err) => {
     if (err.name === 'ValidationError') {
@@ -61,7 +61,7 @@ module.exports.updateAvatar = (req, res) =>{
     if (!user) {
       return res.status(NOT_FOUND_ERROR).send({ message: 'Пользователь с указанным _id не найден' });
     }
-    return res.status(200).send({ data: user });
+    return res.send({ data: user });
   })
   .catch((err) => {
     if (err.name === 'ValidationError') {
