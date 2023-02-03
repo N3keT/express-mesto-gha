@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const usersRouter = require('./routes/users');
-const cardsRouter = require('./routes/cards');
+// const usersRouter = require('./routes/users');
+// const cardsRouter = require('./routes/cards');
 const { NOT_FOUND_ERROR } = require('./utils/errors');
 // const helmet = require('helmet');
 // const rateLimit = require('express-rate-limit');
@@ -30,8 +30,8 @@ app.use((req, res, next) => {
 
   next();
 });
-app.use('/users', usersRouter);
-app.use('/cards', cardsRouter);
+// app.use('/users', usersRouter);
+// app.use('/cards', cardsRouter);
 app.use((req, res) => {
   res.status(NOT_FOUND_ERROR).send({ message: 'Указанная страница не найдена' });
 });
