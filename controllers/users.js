@@ -8,12 +8,12 @@ module.exports.getUsers = (req, res) => {
 };
 
 module.exports.getUser = (req, res) => {
-  User.findById(req.user._id)
+  User.findById(req.params.userId)
   .then((user) => {
     if (!user) {
       return res.status(NOT_FOUND_ERROR).send({ message: 'Пользователь по указанному _id не найден' });
     }
-    return res.send(user);
+    return res.send({ data: user });
   })
   .catch((err) => {
     if (err.name === 'CastError') {
@@ -38,7 +38,7 @@ module.exports.createUser = (req, res) => {
 module.exports.updateUser = (req, res) => {
   const { name, about } = req.body;
 
-  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true })
+  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
   .then((user) => {
     if (!user) {
       return res.status(NOT_FOUND_ERROR).send({ message: 'Пользователь с указанным _id не найден' });
@@ -46,7 +46,7 @@ module.exports.updateUser = (req, res) => {
     return res.send({ data: user });
   })
   .catch((err) => {
-    if (err.name === 'ValidationError') {
+    if (err.name === 'ValidationError' || err.name === 'CastError') {
       return res.status(INCORRECT_DATA_ERROR).send({ message: 'Переданы некорректные данные при обновлении профиля' });
     }
     return res.status(DEFAULT_ERROR).send({message: 'Произошла ошибка'});
