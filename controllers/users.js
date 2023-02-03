@@ -13,7 +13,7 @@ module.exports.getUser = (req, res) => {
     if (!user) {
       return res.status(NOT_FOUND_ERROR).send({ message: 'Пользователь по указанному _id не найден' });
     }
-    return res.send({ data: user });
+    return res.send(user);
   })
   .catch((err) => {
     if (err.name === 'CastError') {
